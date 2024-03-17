@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using static System.Net.Mime.MediaTypeNames;
 
+
 namespace TakeawayCoffeeOrders_OrderingProgram
 {
     class Program
@@ -127,32 +128,64 @@ namespace TakeawayCoffeeOrders_OrderingProgram
                         Console.WriteLine("Sorry, that option is not on our menu.");
                         break;
 
-                }       
+                }
             
-
-
-
-
-
-
-
             Console.ReadLine();
-            Console.WriteLine("Please enter your name");
-
-            Console.ReadLine();
-
-            
-            Console.WriteLine("Adding you to the Waiting list");
-
-           
+            Console.WriteLine("Your coffee is now being prepared!");
+            Console.WriteLine("Expected waiting time: 5 seconds\n");
 
 
-            
+
+            Thread.Sleep(900);
+            Console.WriteLine("Measuring the brew ratio");
+
+
+            Thread.Sleep(900);
+            Console.WriteLine("Grinding the coffee beans");
+
+            Thread.Sleep(900);
+            Console.WriteLine("Boiling the water");
+
+            Thread.Sleep(900);
+            Console.WriteLine("Placing coffee into the filter");
+
+            Thread.Sleep(900);
+            Console.WriteLine("Pouring the coffee");
+
+            Thread.Sleep(900);
+            Console.WriteLine("\nYour coffee is now ready!\n" +
+                "Would you like your receipt" +
+                "\nYes - Press y" +
+                "\nNo - Press n");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         }
 
-        
+
 
     }
 }
