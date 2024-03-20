@@ -125,11 +125,13 @@ namespace TakeawayCoffeeOrders_OrderingProgram
                             "\n-----------------------------------------------------" +
                             "\nCancel - Press 5\n");
                         break;
-                    
+                    default:
+                        Console.WriteLine("Sorry, that is not an option");
+                        break;
 
                 }
             
-            
+            Console.ReadLine();
             Console.WriteLine("Your coffee is now being prepared!");
             Console.WriteLine("Expected waiting time: 5 seconds\n");
 
