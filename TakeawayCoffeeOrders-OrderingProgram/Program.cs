@@ -28,40 +28,41 @@ namespace TakeawayCoffeeOrders_OrderingProgram
                 "For a Cappuccino Press 6\n" +
                 "For a Mocha Press 7\n" +
                 "--------------------------\n");
-            
-            
-                bool ordering = true;
+
+           
+
+        
                 string userInput;
-                double itemPrice;
-                double itemQuantity;
-                double subTol;
-                string response;
+                
+                
 
                 userInput = Console.ReadLine();
                 switch (userInput)
                 {
                     case "1":
 
-                        Console.WriteLine("You have selected a Flat White\n" +
-                            "What size would you like: " +
-                            "\n-----------------------------------------------------" +
-                            "\nSmall will cost $4.50 - Press 1 for this option\n     " +
-                            "\nMedium will cost $5.00 - Press 2 for this option\n   " +
-                            "\nLarge will cost $5.50 - Press 3 for this option\n   " +
-                            "\nExtra Large will cost $6.00 - Press 4 for this option" +
-                            "\n-----------------------------------------------------" +
-                            "\nCancel - Press 5\n");
+                    Console.WriteLine("You have selected a Flat White\n" +
+                        "What size would you like: " +
+                        "\n-----------------------------------------------------" +
+                        "\nSmall will cost $4.50 - Press 1 for this option\n" +
+                        "\nMedium will cost $5.00 - Press 2 for this option\n" +
+                        "\nLarge will cost $5.50 - Press 3 for this option\n" +
+                        "\nExtra Large will cost $5.50 - Press 4 for this option" +
+                        "\n-----------------------------------------------------" +
+                        "\nCancel - Press 5\n");
+                        
+                            
                         break;
                     case "2":
 
                         Console.WriteLine("You have selected a Latte\n" +
                             "What size would you like: " +
-                            "\n-------------------------------------------------------" +
+                            "\n-----------------------------------------------------" +
                             "\nSmall will cost $4.30 - Press 1 for this option\n" +
                             "\nMedium will cost $4.60 - Press 2 for this option\n" +
                             "\nLarge will cost $4.90 - Press 3 for this option\n" +
                             "\nExtra Large will cost $5.20 - Press 4 for this option" +
-                            "\n-------------------------------------------------------" +
+                            "\n-----------------------------------------------------" +
                             "\nCancel - Press 5\n");
                         break;
                     case "3":
@@ -124,13 +125,11 @@ namespace TakeawayCoffeeOrders_OrderingProgram
                             "\n-----------------------------------------------------" +
                             "\nCancel - Press 5\n");
                         break;
-                    default:
-                        Console.WriteLine("Sorry, that option is not on our menu.");
-                        break;
+                    
 
                 }
             
-            Console.ReadLine();
+            
             Console.WriteLine("Your coffee is now being prepared!");
             Console.WriteLine("Expected waiting time: 5 seconds\n");
 
@@ -157,6 +156,7 @@ namespace TakeawayCoffeeOrders_OrderingProgram
                 "Would you like your receipt" +
                 "\nYes - Press y" +
                 "\nNo - Press n");
+            Console.ReadLine();
 
 
 
