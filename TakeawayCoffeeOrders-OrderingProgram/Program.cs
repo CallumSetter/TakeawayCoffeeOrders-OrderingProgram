@@ -131,7 +131,7 @@ namespace TakeawayCoffeeOrders_OrderingProgram
 
                 }
             
-            Console.ReadLine();
+           
             Console.WriteLine("Your coffee is now being prepared!");
             Console.WriteLine("Expected waiting time: 5 seconds\n");
 
