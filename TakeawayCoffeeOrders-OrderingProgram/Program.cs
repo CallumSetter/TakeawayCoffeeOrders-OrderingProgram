@@ -1,340 +1,265 @@
-﻿//Imports
-using System;
-using System.Buffers.Text;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Xml.Serialization;
-using static System.Net.Mime.MediaTypeNames;
 
-
-namespace TakeawayCoffeeOrders_OrderingProgram
+namespace TakeawayCoffeeOrders
 {
-    class Program
+    class CoffeeOrderingProcess
     {
-        //Global Variables
-        static List<string> waitingList = new List<string>();
-        
+        static void Main(string[] args)
+        {
+            Dictionary<int, Dictionary<int, Tuple<string, double>>> coffeeMenu = GetCoffeeMenu();
+            List<string> itemsOrdered = new List<string>();
+            double orderTotal = 0.00;
 
-        
-       
+            Console.WriteLine("Welcome to Dream Coffees\n");
 
-        static string OneCoffee()
+            string orderType = GetOrderType();
+            string name, phoneNumber = "", address = "";
+            double deliveryFee = 3.00;
+
+            GetCustomerDetails(orderType, out name, out phoneNumber, out address, ref orderTotal, deliveryFee);
+            DisplayCoffeeMenu(coffeeMenu);
+
+            CaptureOrderItems(coffeeMenu, itemsOrdered, ref orderTotal);
+
+
+
+
+
+
+
+            DisplayOrderSummary(orderType, name, phoneNumber, address, itemsOrdered, coffeeMenu, orderTotal);
+
+            Console.WriteLine("Thank you for your order!");
+        }
+
+        static Dictionary<int, Dictionary<int, Tuple<string, double>>> GetCoffeeMenu()
         {
 
-            //Make sure the user can only order a takeaway coffee
-            //A takeaway coffee is demanded by the user
-            Console.WriteLine(
-                    "-------- Menu --------\n" +
-                    "Flat White   - Press 1\n" +
-                    "Latte        - Press 2\n" +
-                    "Chai Latte   - Press 3\n" +
-                    "Short Black  - Press 4\n" +
-                    "Long Black   - Press 5\n" +
-                    "Cappuccino   - Press 6\n" +
-                    "Mocha        - Press 7\n" +
-                    "Americano    - Press 8\n" +
-                    "----------------------\n" +
-                    "More - Press 9\n");
-
-           
-            while (true)
+            return new Dictionary<int, Dictionary<int, Tuple<string, double>>>
             {
-
-                //Make sure the user pays the right amount of money for their coffee
-
-
-                string userInput;
-                userInput = Console.ReadLine();
-                switch (userInput)
                 {
-                    case "1":
-
-                        Console.WriteLine("You have selected a Flat White\n" +
-                            "Select Size: " +
-                            "\n------------------------------" +
-                            "\nSmall: $4.50         - Press 1\n" +
-                            "\nMedium: $5.00        - Press 2\n" +
-                            "\nLarge: $5.50         - Press 3\n" +
-                            "\nExtra Large: $5.50   - Press 4" +
-                            "\n------------------------------" +
-                            "\nCancel - Press 5\n");
-
-
-
-                        break;
-                    case "2":
-
-                        Console.WriteLine("You have selected a Latte\n" +
-                            "Select Size: " +
-                            "\n------------------------------" +
-                            "\nSmall:  $4.30        - Press 1\n" +
-                            "\nMedium: $4.80        - Press 2\n" +
-                            "\nLarge: $5.30         - Press 3\n" +
-                            "\nExtra Large: $5.90   - Press 4" +
-                            "\n------------------------------" +
-                            "\nCancel - Press 5\n");
-                        break;
-                    case "3":
-
-                        Console.WriteLine("You have selected a Chai Latte\n" +
-                            "Select Size: " +
-                            "\n------------------------------" +
-                            "\nSmall: $5.00         - Press 1\n" +
-                            "\nMedium: $5.50        - Press 2\n" +
-                            "\nLarge: $6.00         - Press 3\n" +
-                            "\nExtra Large: $6.50   - Press 4" +
-                            "\n------------------------------" +
-                            "\nCancel - Press 5\n");
-                        break;
-                    case "4":
-
-                        Console.WriteLine("You have selceted a Short Black\n" +
-                            "Select Size:" +
-                            "\n------------------------------" +
-                            "\nSmall: $4.00         - Press 1\n" +
-                            "\nMedium: $4.50        - Press 2\n" +
-                            "\nLarge: $5.00         - Press 3\n" +
-                            "\nExtra Large: $5.50   - Press 4" +
-                            "\n------------------------------" +
-                            "\nCancel - Press 5\n");
-                        break;
-                    case "5":
-
-                        Console.WriteLine("You have selceted a Long Black\n" +
-                            "Select Size:" +
-                            "\n------------------------------" +
-                            "\nSmall: $5.00         - Press 1\n" +
-                            "\nMedium: $5.50        - Press 2\n" +
-                            "\nLarge: $6.00         - Press 3\n" +
-                            "\nExtra Large: $6.50   - Press 4" +
-                            "\n------------------------------" +
-                            "\nCancel - Press 5\n");
-                        break;
-                    case "6":
-
-                        Console.WriteLine("You have selceted a Cappuccino\n" +
-                            "Select Size:" +
-                            "\n------------------------------" +
-                            "\nSmall: $5.50         - Press 1\n" +
-                            "\nMedium: $6.00        - Press 2\n" +
-                            "\nLarge: $6.50         - Press 3\n" +
-                            "\nExtra Large: $7.00   - Press 4" +
-                            "\n------------------------------" +
-                            "\nCancel - Press 5\n");
-                        break;
-                    case "7":
-
-                        Console.WriteLine("You have selceted a Mocha\n" +
-                            "Select Size:" +
-                            "\n------------------------------" +
-                            "\nSmall: $5.40         - Press 1\n" +
-                            "\nMedium: $5.90        - Press 2\n" +
-                            "\nLarge: $6.40         - Press 3\n" +
-                            "\nExtra Large: $6.90   - Press 4" +
-                            "\n------------------------------" +
-                            "\nCancel - Press 5\n");
-                        break;
-                    case "8":
-                        Console.WriteLine("You have selected an Americano\n" +
-                            "Select Size:" +
-                            "\n------------------------------ " +
-                            "\nSmall: $4.50         - Press 1\n" +
-                            "\nMedium: $5.00        - Press 2\n" +
-                            "\nLarge: $5.50         - Press 3\n" +
-                            "\nExtra Large: $6.00   - Press 4" +
-                            "\n------------------------------" +
-                            "\nCancel - Press 5\n");
-
-                       
-
-
-
-                        break;
-
-                        //Give the user an option to view information about each type of coffee
-                    case "9":
-                        Console.WriteLine(
-                            "\n1. Flat White:\n" +
-                        "An espresso-based drink that contains steamed milk. Flat Whites originated in New Zealand in the 1980s and several years later, Flat Whites began to appear on menus in countries such as the United States and the United Kingdom. Flat Whites are often mistaken for Lattes but what separates them is that Flat Whites have a stronger coffee taste, giving Lattes a sweeter taste.\n");
-                        Console.WriteLine("Press any key to view information about Lattes");
-                        Console.ReadLine();
-                            Console.Clear();
-
-                        Console.WriteLine("\n2. Latte:\n" +
-                            "A milk coffee that contains a silky layer of foam. Lattes are usually made up of one or two shots of espresso, steamed milk and topped with a thin layer of frothed milk. The first origins of Lattes are not very clear as people have been combining coffee and milk for centuries. Modern Lattes that people know today originated in Seattle, United States during the 1980s. \n");
-                        Console.WriteLine("Press any key to view information about Chai Lattes");
-                        Console.ReadLine();
-                        Console.Clear();
-
-                        Console.WriteLine("\n3. Chai Latte:\n" +
-                            "A hot, milky, fragrant, gently spicy type of coffee. What makes Chai Lattes different from other coffees is that doesn't contain any coffee. Chai Lattes contain a sweetened chai syrup or powder allowing them to be made quickly. Chai Lattes originated in India thousands of years ago and have spread in popularity over the last two centuries.\n");
-                        Console.WriteLine("Press any key to view information about Short Blacks");
-                        Console.ReadLine();
-                        Console.Clear();
-
-                        Console.WriteLine("\n4. Short Black:\n" +
-                            "A single espresso shot without milk. Short Blacks are great to have when you just want to enjoy the pure taste of coffee. Short Blacks have a very strong taste as they only contain an espresso shot and hot water. It isn’t too clear where short black coffees originate from, however they are globally popular appearing on most Cafe menus. \n");
-                        Console.WriteLine("Press any key to view information about Long Blacks");
-                        Console.ReadLine();
-                        Console.Clear();
-
-                        Console.WriteLine("\n5. Long Black:\n" +
-                            "An espresso-based drink popular in Australia and New Zealand. The only ingredients used in a long black is espresso and hot water. Long Blacks are traditionally made by pouring a double shot of espresso or ristretto over 100 to 120ml of hot water from the espresso machine. Long Blacks have always been confused with Americanos, but their main difference is how the hot water is mixed with the espresso. An Americano is made by pouring hot water over espresso while a Long Black is made in the opposite way.  \n");
-                        Console.WriteLine("Press any key to view information about Cuppuccinos");
-                        Console.ReadLine();
-                        Console.Clear();
-
-                        Console.WriteLine("\n6. Cappuccino:\n" +
-                            "A perfect balance of espresso steamed milk and foam. Cappuccinos are all about the structure of splitting the three elements into equal thirds. Cappuccinos are supposed to be rich but not acidic, also they should have a mildly sweet flavouring from the milk. The milk is not actually mixed in with the Cappuccino giving it a stronger flavour. Cappuccinos originated in Italy and then made their way across the world we’re they are now seen on most cafe menus.  \n");
-                        Console.WriteLine("Press any key to view information about Mochas");
-                        Console.ReadLine();
-                        Console.Clear();
-
-                        Console.WriteLine("\n7. Mocha:\n" +
-                            "A variant of a latte being a deliciously sweet, nutty and chocolatey flavoured coffee. Mochas is an espresso-based drink; however, it is different from most other coffees due to its sweeter taste. Mochas are made with a shot of espresso, followed by milk and cream. It can also be combined with chocolate powder or syrup.  The term ‘mocha’ is a specific type of coffee bean which is only grown in the city of Mocha, Yemen. \n");
-                        Console.WriteLine("Press any key to view information about Americanos");
-                        Console.ReadLine();
-                        Console.Clear();
-
-                        Console.WriteLine("\n8. Americano:\n" +
-                            "Simply just hot water and espresso. They are made by adding the espresso first, then the crema is added after to give a mellow taste. Americanos originate back to World War II when American soldiers were stationed in Italy, the American soldiers didn’t like the strong espresso that was popular in Italy, so they tried to recreate their beloved drip coffee from America by adding water to an espresso shot. This is now known today is an Americano. \n");
-                        Console.WriteLine("Press any key to return to the menu");
-                        Console.ReadLine();
-                        Console.Clear();
-                        break;
-                    
-
-
-                       
-
-
-
-
-                }
-
-
-
-
-
-
-
-
-
-                //The users coffee will start to be prepared
-                Console.ReadLine();
-                Console.WriteLine("Your coffee is now being prepared!");
-                Console.WriteLine("Expected waiting time: 5 seconds\n");
-
-
-
-                Thread.Sleep(1000);
-                Console.WriteLine("Measuring the brew ratio");
-
-
-                Thread.Sleep(1000);
-                Console.WriteLine("Grinding the coffee beans");
-
-                Thread.Sleep(1000);
-                Console.WriteLine("Boiling the water");
-
-                Thread.Sleep(1000);
-                Console.WriteLine("Placing coffee into the filter");
-
-                Thread.Sleep(1000);
-                Console.WriteLine("Pouring the coffee\n");
-
-                Console.WriteLine("Thank you for your order!");
-
-
-
-
-
-                
-                while (true)
-                {
-                    Console.WriteLine("Would you like to run the program again\n" +
-                       "Run Again  - Press 1\n" +
-                       "Exit       - Press 2 ");
-
-                    string proceed = Console.ReadLine();
-                    if (!string.IsNullOrWhiteSpace(proceed))
+                    1, new Dictionary<int, Tuple<string, double>>
                     {
-                        proceed = proceed.ToLower().Substring(0, 1);
-
-                        if (proceed.Equals("1") || proceed.Equals("2")) 
-                        {
-                            return proceed;
-                        }
+                        { 1, Tuple.Create("Espresso", 2.50) },
+                        { 2, Tuple.Create("Espresso", 3.00) },
+                        { 3, Tuple.Create("Espresso", 3.50) }
                     }
-                    Console.WriteLine("Please enter either options '1' or '2'\n\n");
+                },
+                {
+                    2, new Dictionary<int, Tuple<string, double>>
+                    {
+                        { 1, Tuple.Create("Americano", 3.00) },
+                        { 2, Tuple.Create("Americano", 3.50) },
+                        { 3, Tuple.Create("Americano", 4.00) }
+                    }
+                },
+                {
+                    3, new Dictionary<int, Tuple<string, double>>
+                    {
+                        { 1, Tuple.Create("Latte", 3.50) },
+                        { 2, Tuple.Create("Latte", 4.00) },
+                        { 3, Tuple.Create("Latte", 4.50) }
+                    }
+                },
+                {
+                    4, new Dictionary<int, Tuple<string, double>>
+                    {
+                        { 1, Tuple.Create("Cappuccino", 3.50) },
+                        { 2, Tuple.Create("Cappuccino", 4.00) },
+                        { 3, Tuple.Create("Cappuccino", 4.50) }
+                    }
+                },
+                {
+                    5, new Dictionary<int, Tuple<string, double>>
+                    {
+                        { 1, Tuple.Create("Mocha", 4.00) },
+                        { 2, Tuple.Create("Mocha", 4.50) },
+                        { 3, Tuple.Create("Mocha", 5.00) }
+
+                    }
+                },
+                {
+                    6, new Dictionary<int, Tuple<string, double>>
+                    {
+                        { 1, Tuple.Create("Mocha", 4.00) },
+                        { 2, Tuple.Create("Mocha", 4.50) },
+                        { 3, Tuple.Create("Mocha", 5.00) }
+
+                    }
+                },
+                {
+                    5, new Dictionary<int, Tuple<string, double>>
+                    {
+                        { 1, Tuple.Create("Mocha", 4.00) },
+                        { 2, Tuple.Create("Mocha", 4.50) },
+                        { 3, Tuple.Create("Mocha", 5.00) }
+
+                    }
+                },
+                {
+                    5, new Dictionary<int, Tuple<string, double>>
+                    {
+                        { 1, Tuple.Create("Mocha", 4.00) },
+                        { 2, Tuple.Create("Mocha", 4.50) },
+                        { 3, Tuple.Create("Mocha", 5.00) }
+
+                    }
+                },
+                {
+                    5, new Dictionary<int, Tuple<string, double>>
+                    {
+                        { 1, Tuple.Create("Mocha", 4.00) },
+                        { 2, Tuple.Create("Mocha", 4.50) },
+                        { 3, Tuple.Create("Mocha", 5.00) }
+
+                    }
+                },
+                {
+                    5, new Dictionary<int, Tuple<string, double>>
+                    {
+                        { 1, Tuple.Create("Mocha", 4.00) },
+                        { 2, Tuple.Create("Mocha", 4.50) },
+                        { 3, Tuple.Create("Mocha", 5.00) }
+
+                    }
+                },
+                {
+                    5, new Dictionary<int, Tuple<string, double>>
+                    {
+                        { 1, Tuple.Create("Mocha", 4.00) },
+                        { 2, Tuple.Create("Mocha", 4.50) },
+                        { 3, Tuple.Create("Mocha", 5.00) }
+
+                    }
+                },
+                {
+                    5, new Dictionary<int, Tuple<string, double>>
+                    {
+                        { 1, Tuple.Create("Mocha", 4.00) },
+                        { 2, Tuple.Create("Mocha", 4.50) },
+                        { 3, Tuple.Create("Mocha", 5.00) }
+
+                    }
                 }
-                   
-                        
-
-                   
-
-
-
-            }
-
-
-
-
+            };
         }
-       
 
-
-        static void Main()
+        static void DisplayCoffeeMenu(Dictionary<int, Dictionary<int, Tuple<string, double>>> coffeeMenu)
         {
+            Console.WriteLine("\n------------------------------- Menu -------------------------------\n\n" +
 
-            Console.WriteLine("Hello, what type of coffee would like to order\n");
-
-
-
-            string reRun = "1";
-
-
-
-            do
+                "Small: 1, Medium: 2, Large: 3, Extra Large: 4\n");
+            foreach (var coffee in coffeeMenu)
             {
-
-                OneCoffee();
-                
-
-
+                Console.WriteLine($"{coffee.Key}. {coffee.Value[1].Item1}:");
+                foreach (var size in coffee.Value)
+                {
+                    Console.WriteLine($"  - {size.Key}: ${size.Value.Item2}");
+                }
             }
-
-            while (reRun.Equals("2"));
-            Console.WriteLine("\nThank you for using the coffee ordering process, have a nice day!");
-
         }
 
+        static void CaptureOrderItems(Dictionary<int, Dictionary<int, Tuple<string, double>>> coffeeMenu, List<string> itemsOrdered, ref double orderTotal)
+        {
+            bool addingItems = true;
+            while (addingItems)
+            {
+                Console.Write(
+                    "\nOnce you are finished with your order, type 13:\n");
+                string input = Console.ReadLine();
 
+                if (input.ToLower() == "13")
+                {
+                    addingItems = false;
+                }
+                else if (int.TryParse(input, out int coffeeChoice) && coffeeMenu.ContainsKey(coffeeChoice))
+                {
+                    Console.Write($"Please enter the size for your{coffeeMenu[coffeeChoice][1].Item1}\n");
+                    string sizeInput = Console.ReadLine();
 
+                    if (int.TryParse(sizeInput, out int sizeChoice) && coffeeMenu[coffeeChoice].ContainsKey(sizeChoice))
+                    {
+                        string coffeeName = coffeeMenu[coffeeChoice][sizeChoice].Item1;
+                        itemsOrdered.Add(coffeeName);
+                    orderTotal += coffeeMenu[coffeeChoice][sizeChoice].Item2;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid size choice. Please select from the available sizes.");
+                }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid coffee choice. Please select from the menu.");
+                }
+            }
+        }
 
+        static string GetOrderType()
+        {
+            string orderType = "";
+            while (orderType != "1" && orderType != "2")
+            {
+                Console.Write("How will you be receiving your order?\n" +
+                    "Delivery - Press 1\n " +
+                    "Pick up  - Press 2");
+                orderType = Console.ReadLine().ToLower();
 
+                if (orderType != "1" && orderType != "2")
+                {
+                    Console.WriteLine("Error: please enter either '1' or '2'.");
+                }
+            }
+            return orderType;
+        }
 
+        static void GetCustomerDetails(string orderType, out string name, out string phoneNumber, out string address, ref double orderTotal, double deliveryFee)
+        {
+            name = "";
+            phoneNumber = "";
+            address = "";
+
+            if (orderType == "delivery")
+            {
+                Console.Write("Please enter your name: ");
+                name = Console.ReadLine();
+
+                Console.Write("Please enter your phone number: ");
+                phoneNumber = Console.ReadLine();
+
+                Console.Write("Please enter your address: ");
+                address = Console.ReadLine();
+
+                orderTotal += deliveryFee;
+            }
+            else if (orderType == "pickup")
+            {
+                Console.Write("Please enter your name: ");
+                name = Console.ReadLine();
+            }
+        }
+
+        static void DisplayOrderSummary(string orderType, string name, string phoneNumber, string address, List<string> itemsOrdered, Dictionary<int, Dictionary<int, Tuple<string, double>>> coffeeMenu, double orderTotal)
+        {
+            Console.WriteLine("\nOrder Summary:");
+            Console.WriteLine($"Order Type: {orderType}");
+            Console.WriteLine($"Name: {name}");
+
+            if (orderType == "delivery")
+            {
+                Console.WriteLine($"Phone Number: {phoneNumber}");
+                Console.WriteLine($"Address: {address}");
+            }
+
+            Console.WriteLine("Items Ordered:");
+            foreach (string item in itemsOrdered)
+            {
+                Console.WriteLine($"- {item}");
+            }
+
+            Console.WriteLine($"Order Total: ${orderTotal}");
+        }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
-
-
 
