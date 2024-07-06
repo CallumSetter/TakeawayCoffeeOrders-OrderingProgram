@@ -1,8 +1,5 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Threading.Channels;
 
 class CoffeeOrderingProcess
 {
@@ -24,29 +21,29 @@ class CoffeeOrderingProcess
 
             if (itemsOrdered.Count > 0)
             {
-                string orderType = ReceiveOrder();
+                string orderType = RecieveOrder();
 
                 double deliveryFee = 3.00;
                 string name, phoneNumber = "", address = "";
                 GetCustomerDetails(orderType, out name, out phoneNumber, out address, ref orderTotal, deliveryFee);
                 WaitingOrder();
 
-                //Let the user know when their coffee is ready
+                //Let the user know when their coffee order is ready
                 Console.WriteLine("Your coffee order is now ready");
-                DisplayOrder(orderType, name, phoneNumber, address, itemsOrdered, orderTotal);
 
-                
+                DisplayOrderSummary(orderType, name, phoneNumber, address, itemsOrdered, orderTotal);
+
+
             }
             else
             {
-                Console.WriteLine("Order cancelled. No items were ordered.");
+                Console.WriteLine("Your order has been cancelled.");
             }
 
             //Allow the user to run the program again
             ordering = false;
             while (true)
             {
-                
                 Console.Write("Would you like to place another order?\n" +
                     "Yes - Press 1\n" +
                     "No  - Press 2\n");
@@ -56,11 +53,13 @@ class CoffeeOrderingProcess
                 if (response == "1")
                 {
                     ordering = true;
+                    Console.WriteLine("Thank you ordering again!");
                     break;
                 }
                 else if (response == "2")
                 {
                     ordering = false;
+                    Console.WriteLine("\nThank you for ordering at Dream Coffees, have a nice day!");
                     break;
                 }
                 else
@@ -80,8 +79,8 @@ class CoffeeOrderingProcess
                 {
                     { 1, Tuple.Create("Flat White", 2.50) },
                     { 2, Tuple.Create("Flat White", 3.00) },
-                    { 3, Tuple.Create("Flat White", 3.50) },
-                    { 4, Tuple.Create("Flat White", 4.00) }
+                    { 3, Tuple.Create("Flat White", 3.00) }
+
                 }
             },
             {
@@ -89,8 +88,8 @@ class CoffeeOrderingProcess
                 {
                     { 1, Tuple.Create("Latte", 3.00) },
                     { 2, Tuple.Create("Latte", 3.50) },
-                    { 3, Tuple.Create("Latte", 4.00) },
-                    { 4, Tuple.Create("Latte", 4.50) }
+                    { 3, Tuple.Create("Latte", 3.50) }
+
                 }
             },
             {
@@ -98,8 +97,8 @@ class CoffeeOrderingProcess
                 {
                     { 1, Tuple.Create("Chai Latte", 3.50) },
                     { 2, Tuple.Create("Chai Latte", 4.00) },
-                    { 3, Tuple.Create("Chai Latte", 4.50) },
-                    { 4, Tuple.Create("Chai Latte", 5.00) }
+                    { 3, Tuple.Create("Chai Latte", 4.00) },
+
                 }
             },
             {
@@ -107,17 +106,19 @@ class CoffeeOrderingProcess
                 {
                     { 1, Tuple.Create("Short Black", 3.50) },
                     { 2, Tuple.Create("Short Black", 4.00) },
-                    { 3, Tuple.Create("Short Black", 4.50) },
-                    { 4, Tuple.Create("Short Black", 5.00) }
+                    { 3, Tuple.Create("Short Black", 4.00) },
+
+
                 }
+
             },
             {
                 5, new Dictionary<int, Tuple<string, double>>
                 {
                     { 1, Tuple.Create("Long Black", 4.00) },
                     { 2, Tuple.Create("Long Black", 4.50) },
-                    { 3, Tuple.Create("Long Black", 5.00) },
-                    { 4, Tuple.Create("Long Black", 5.50) }
+                    { 3, Tuple.Create("Long Black", 4.50) },
+
                 }
             },
             {
@@ -125,87 +126,90 @@ class CoffeeOrderingProcess
                 {
                     { 1, Tuple.Create("Cappuccino", 4.00) },
                     { 2, Tuple.Create("Cappuccino", 4.50) },
-                    { 3, Tuple.Create("Cappuccino", 5.50) },
-                    { 4, Tuple.Create("Cappuccino", 6.00) }
+                    { 3, Tuple.Create("Cappuccino", 4.50) },
+
                 }
             },
-
             {
                 7, new Dictionary<int, Tuple<string, double>>
                 {
-                    { 1, Tuple.Create("Americano", 3.00) },
-                    { 2, Tuple.Create("Americano", 3.50) },
-                    { 3, Tuple.Create("Americano", 4.00) },
-                    { 4, Tuple.Create("Americano", 4.50) }
+                    { 1, Tuple.Create("Mocha", 4.00) },
+                    { 2, Tuple.Create("Mocha", 4.50) },
+                    { 3, Tuple.Create("Mocha", 4.50) },
+
                 }
             },
             {
                 8, new Dictionary<int, Tuple<string, double>>
                 {
-                    { 1, Tuple.Create("Cortado", 2.50) },
-                    { 2, Tuple.Create("Cortado", 3.00) },
-                    { 3, Tuple.Create("Cortado", 3.50) },
-                    { 4, Tuple.Create("Cortado", 4.00) }
+                    { 1, Tuple.Create("Americano", 4.00) },
+                    { 2, Tuple.Create("Americano", 4.50) },
+                    { 3, Tuple.Create("Americano", 4.50) },
+
                 }
             },
             {
                 9, new Dictionary<int, Tuple<string, double>>
                 {
-                    { 1, Tuple.Create("Ristretto", 4.00) },
-                    { 2, Tuple.Create("Ristretto", 4.50) },
-                    { 3, Tuple.Create("Ristretto", 5.00) },
-                    { 4, Tuple.Create("Ristretto", 5.50) }
+                    { 1, Tuple.Create("Cortado", 4.00) },
+                    { 2, Tuple.Create("Cortado", 4.50) },
+                    { 3, Tuple.Create("Cortado", 4.50) },
+
                 }
             },
             {
                 10, new Dictionary<int, Tuple<string, double>>
                 {
-                    { 1, Tuple.Create("Affogato", 3.00) },
-                    { 2, Tuple.Create("Affogato", 3.50) },
-                    { 3, Tuple.Create("Affogato", 4.00) },
-                    { 4, Tuple.Create("Affogato", 4.50) }
+                    { 1, Tuple.Create("Ristretto", 4.00) },
+                    { 2, Tuple.Create("Ristretto", 4.50) },
+                    { 3, Tuple.Create("Ristretto", 4.50) },
+
                 }
             },
             {
                 11, new Dictionary<int, Tuple<string, double>>
                 {
-                    { 1, Tuple.Create("Iced Coffee", 4.50) },
-                    { 2, Tuple.Create("Iced Coffee", 5.00) },
-                    { 3, Tuple.Create("Iced Coffee", 5.50) },
-                    { 4, Tuple.Create("Iced Coffee", 6.00) }
+                    { 1, Tuple.Create("Affogato", 4.00) },
+                    { 2, Tuple.Create("Affogato", 4.50) },
+                    { 3, Tuple.Create("Affogato", 4.50) },
+
                 }
             },
             {
                 12, new Dictionary<int, Tuple<string, double>>
                 {
-                    { 1, Tuple.Create("Mocha", 3.50) },
-                    { 2, Tuple.Create("Mocha", 4.00) },
-                    { 3, Tuple.Create("Mocha", 4.50) },
-                    { 4, Tuple.Create("Mocha", 5.00) }
+                    { 1, Tuple.Create("Iced Coffee", 4.00) },
+                    { 2, Tuple.Create("Iced Coffee", 4.50) },
+                    { 3, Tuple.Create("Iced Coffee", 4.50) },
+
                 }
             }
+
         };
     }
 
     static void OneCoffee(Dictionary<int, Dictionary<int, Tuple<string, double>>> coffeeMenu)
     {
-        //Display a menu of coffees and their prices for the user
-        Console.WriteLine("-------------------- Menu --------------------");
+        //Display a menu of coffees and their prices for the user 
+        Console.WriteLine("\n-------- Menu --------");
+
         foreach (var coffee in coffeeMenu)
         {
             string coffeeName = coffee.Value[1].Item1;
             Console.WriteLine($"{coffee.Key}. {coffeeName}:");
             foreach (var size in coffee.Value)
             {
+
                 string sizeName = GetSizeName(size.Key);
-                Console.WriteLine($"  {size.Key}. {sizeName}: ${size.Value.Item2}");
 
-                
+                Console.WriteLine($"  {size.Key}. {sizeName}: ${size.Value.Item2:F2}");
+
+
             }
+            Console.WriteLine("----------------------");
 
-           
+
         }
-
         //Let the user know that they can only order a maximum of five coffees.
         Console.Write("\n----------------------------------------------------------------------------------\n");
         Console.Write("Please take your time to scroll though our wide range of coffee types!\n");
@@ -214,27 +218,27 @@ class CoffeeOrderingProcess
         Console.Write("\n----------------------------------------------------------------------------------\n");
     }
     static void WaitingOrder()
+
     {
 
         Console.WriteLine("\nYour order is now being prepared!");
+
         Console.WriteLine("Expected waiting time: 6 seconds\n");
-
-
 
         Thread.Sleep(1000);
         Console.WriteLine("Measuring the brew ratio");
-
 
         Thread.Sleep(1000);
         Console.WriteLine("Grinding the coffee beans");
 
         Thread.Sleep(1000);
+
         Console.WriteLine("Boiling the water");
-
         Thread.Sleep(1000);
+
         Console.WriteLine("Placing coffee into the filter");
-
         Thread.Sleep(1000);
+
         Console.WriteLine("Pouring the coffee\n");
 
     }
@@ -246,7 +250,7 @@ class CoffeeOrderingProcess
         while (addingItems && itemsOrdered.Count < 5)
         {
             Console.Write("\nFinish Order  - Type 13\n" +
-                "Cancel Order  - Type 14\n");
+              "Cancel Order  - Type 14\n");
 
             string input = Console.ReadLine();
 
@@ -264,10 +268,9 @@ class CoffeeOrderingProcess
             else if (int.TryParse(input, out int coffeeChoice) && coffeeMenu.ContainsKey(coffeeChoice))
             {
                 Console.Write($"Please enter the size for {coffeeMenu[coffeeChoice][1].Item1}" +
-                    $"\nSmall       - Press 1\n" +
-                    $"Medium      - Press 2\n" +
-                    $"Large       - Press 3\n" +
-                    $"Extra Large - Press 4\n");
+                   $"\nSmall       - Press 1\n" +
+                   $"Medium      - Press 2\n" +
+                   $"Large       - Press 3\n");
 
                 string sizeInput = Console.ReadLine();
 
@@ -279,7 +282,10 @@ class CoffeeOrderingProcess
                     itemsOrdered.Add(Tuple.Create(coffeeMenu[coffeeChoice][sizeChoice].Item1, sizeName, coffeeName, price));
                     orderTotal += price;
                 }
-               
+                else
+                {
+                    Console.WriteLine("Error: please enter the correct input for the size if you want the coffee");
+                }
             }
             else
             {
@@ -287,30 +293,31 @@ class CoffeeOrderingProcess
             }
         }
 
+        //Let the user know when they have ordered the maximum number of coffees
         if (itemsOrdered.Count == 5)
         {
             Console.WriteLine("You have reached the maximum number of 5 coffees.");
         }
     }
 
-    static string ReceiveOrder()
+    static string RecieveOrder()
     {
-        //Give the user the option to receive their order from either delivery or pick up
+        //Give the user the option to receive their order from either delivery or pick up 
         string orderType = "";
-        while (orderType != "1" && orderType != "2")
+        while (orderType != "a" && orderType != "b")
         {
             Console.Write("\nHow will you be receiving your order?\n" +
-                "-------------------------------\n" +
-                "Delivery - Press 1\n" +
-                "This will cost an additional $3\n\n" +
-                "Pick up  - Press 2\n" +
-                "-------------------------------\n");
 
+                "-------------------------------\n" +
+                "Delivery - Press a\n" +
+                "This will cost an additional $3\n\n" +
+                "Pick up  - Press b\n" +
+                "-------------------------------\n");
             orderType = Console.ReadLine().ToLower();
 
-            if (orderType != "1" && orderType != "2")
+            if (orderType != "a" && orderType != "b")
             {
-                Console.WriteLine("Error: Please enter either '1' or '2'");
+                Console.WriteLine("Invalid order type. Please enter either 'a' or 'b'.");
             }
         }
         return orderType;
@@ -318,18 +325,15 @@ class CoffeeOrderingProcess
 
     static void GetCustomerDetails(string orderType, out string name, out string phoneNumber, out string address, ref double orderTotal, double deliveryFee)
     {
-        
         name = "";
         phoneNumber = "";
         address = "";
 
-        if (orderType == "1")
+        if (orderType == "a")
         {
-            
             Console.Write("Please enter your name: ");
             name = Console.ReadLine();
 
-            
             Console.Write("Please enter your phone number: ");
             phoneNumber = Console.ReadLine();
 
@@ -338,19 +342,20 @@ class CoffeeOrderingProcess
 
             orderTotal += deliveryFee;
         }
-        else if (orderType == "2")
+        else if (orderType == "b")
         {
             Console.Write("Please enter your name: ");
             name = Console.ReadLine();
         }
     }
 
-    static void DisplayOrder(string orderType, string name, string phoneNumber, string address, List<Tuple<string, string, string, double>> itemsOrdered, double orderTotal)
+    static void DisplayOrderSummary(string orderType, string name, string phoneNumber, string address, List<Tuple<string, string, string, double>> itemsOrdered, double orderTotal)
     {
-        Console.WriteLine("\nOrder Summary:\n");
+        Console.WriteLine("\nOrder Summary:");
 
-        //Display customers details
+        //Display customers details 
         Console.WriteLine($"------------- Customer Details -------------\n");
+        Console.WriteLine($"Order Type: {orderType}");
         Console.WriteLine($"Name: {name}");
 
         if (orderType == "1")
@@ -359,21 +364,26 @@ class CoffeeOrderingProcess
             Console.WriteLine($"Address: {address}");
         }
 
-        //Display everything the user has ordered with the individual prices
+        //Display everything the user has ordered with the individual prices 
         Console.WriteLine("\n-------------- Order of items --------------\n");
+
         foreach (var item in itemsOrdered)
         {
-            Console.WriteLine($"- {item.Item1} ({item.Item2}): ${item.Item4}");
+            Console.WriteLine($"- One {item.Item2} {item.Item1}:  ${item.Item4:F2}");
         }
 
-        Console.WriteLine("\n--------------------------------------------");
 
-        //Display the total cost from everything they've ordered
-        Console.WriteLine("\n---------------------------------------------------------------------------------------");
-        Console.WriteLine($"Order Total: ${orderTotal}");
-        Console.WriteLine("Note: If you chose delivery, the additional $3 fee would have been automatically added.");
-        Console.WriteLine("---------------------------------------------------------------------------------------\n");
+        //Display the total cost from everything they've ordered 
+
+        Console.WriteLine("\n-------------------------------------------");
+
+        Console.WriteLine($"Order Total: ${orderTotal:F2}");
+
+
+
+        Console.WriteLine("-------------------------------------------\n");
     }
+
     static string GetSizeName(int sizeKey)
     {
         return sizeKey switch
@@ -381,12 +391,7 @@ class CoffeeOrderingProcess
             1 => "Small",
             2 => "Medium",
             3 => "Large",
-            4 => "Extra Large",
             _ => ""
         };
     }
-
 }
-
-    
-
